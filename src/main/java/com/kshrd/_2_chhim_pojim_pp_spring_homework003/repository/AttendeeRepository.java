@@ -1,7 +1,52 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
-import org.apache.ibatis.annotations.Mapper;
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.AttendeeRequest;
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Attendee;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface AttendeeRepository {
+
+    @Results(id = "attendeeMapper", value = {
+       @Result(property = "attendeeId", column = "attendee_id"),
+       @Result(property = "attendeeName", column = "attendee_name")
+    })
+    @Select("""
+        SELECT * FROM attendees
+        LIMIT #{size}
+        OFFSET (#{page} - 1) * #{size};   
+    """)
+    List<Attendee> findAllAttendees(Integer page, Integer size);
+
+    @Select("""
+        SELECT * FROM attendees
+        WHERE attendee_id = #{attendeeId};   
+    """)
+    @ResultMap("attendeeMapper")
+    Attendee findAttendeeById(Integer attendeeId);
+
+    @Select("""
+        INSERT INTO attendees (attendee_name, email) 
+        VALUES (#{attendeeName} , #{email}) RETURNING *;
+    """)
+    @ResultMap("attendeeMapper")
+    Attendee saveAttendee(AttendeeRequest attendeeRequest);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM attendees 
+        WHERE attendee_id = #{attendeeId};
+    """)
+    boolean isAttendeeExist(Integer attendeeId);
+
+    @Select("""
+        UPDATE attendees SET attendee_name = #{req.attendeeName} ,
+                             email = #{req.email} WHERE attendees.attendee_id = #{attendeeId}
+                            RETURNING *;
+    """)
+    Attendee updateVenueById(Integer attendeeId,@Param("req") AttendeeRequest attendeeRequest);
+
+    @Delete("DELETE FROM attendees WHERE attendee_id = #{attendeeId}")
+    void deleteAttendeeById(Integer attendeeId);
 }

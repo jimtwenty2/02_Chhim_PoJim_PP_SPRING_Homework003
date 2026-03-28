@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VenueController {
     private final VenueService venueService;
-    private final VenueRepository venueRepository;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<VenueResponse>>> getAllVenues(

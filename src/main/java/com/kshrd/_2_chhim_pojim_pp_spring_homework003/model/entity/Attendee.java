@@ -1,5 +1,7 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

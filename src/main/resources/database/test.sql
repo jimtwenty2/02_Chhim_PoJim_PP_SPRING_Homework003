@@ -16,3 +16,5 @@ INSERT INTO venues (venue_name, location) VALUES
     ('Scam Center', 'Phnom Penh - HRD') RETURNING *;
 
 SELECT * FROM venues;
+
+UPDATE attendees SET attendee_name = 'null' WHERE attendee_id = 1 RETURNING *;
