@@ -2,6 +2,9 @@ package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.AttendeeRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Attendee;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -45,8 +48,33 @@ public interface AttendeeRepository {
                              email = #{req.email} WHERE attendees.attendee_id = #{attendeeId}
                             RETURNING *;
     """)
+    @ResultMap("attendeeMapper")
     Attendee updateVenueById(Integer attendeeId,@Param("req") AttendeeRequest attendeeRequest);
 
     @Delete("DELETE FROM attendees WHERE attendee_id = #{attendeeId}")
     void deleteAttendeeById(Integer attendeeId);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM attendees 
+        WHERE attendee_name = #{attendeeName};
+    """)
+    boolean isAttendeeExistByName(String attendeeName);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM attendees 
+        WHERE email = #{email};
+    """)
+    boolean isAttendeeExistByEmail(String email);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM attendees 
+        WHERE attendee_name = #{attendeeName} AND attendee_id != #{attendeeId};
+    """)
+    boolean isAttendeeExistByNameNotCurId(String attendeeName, Integer attendeeId);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM attendees 
+        WHERE email = #{email} AND attendee_id != #{attendeeId};
+    """)
+    boolean isAttendeeExistByEmailNotCurId(String email, Integer attendeeId);
 }

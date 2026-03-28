@@ -9,6 +9,6 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaginationNotAllowedExceptionHandler extends RuntimeException{
+public class InputParametersNotAllowedExceptionHandler extends RuntimeException{
     private Map<String, String> errors;
 }

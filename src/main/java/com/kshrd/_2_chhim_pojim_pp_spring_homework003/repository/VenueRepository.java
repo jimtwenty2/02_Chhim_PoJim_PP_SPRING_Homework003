@@ -2,6 +2,8 @@ package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.VenueRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public interface VenueRepository {
     @Select("""
         SELECT COUNT(*) > 0 FROM venues WHERE venue_id = #{venueId};
     """)
-    boolean isVenueExist(Integer venueId);
+    boolean isVenueExistById(Integer venueId);
 
     @Select("""
         DELETE FROM venues WHERE venue_id = #{venueId} RETURNING *;
@@ -49,4 +51,15 @@ public interface VenueRepository {
     """)
     @ResultMap("venueMapper")
     Venue saveVenue(VenueRequest venueRequest);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM venues WHERE venue_name = #{venueName};
+    """)
+    boolean isVenueExistByName(String venueName);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM venues 
+        WHERE venue_name = #{venueName} AND venue_id != #{venueId};
+    """)
+    boolean isVenueExistByNameNotCurId(String venueName, Integer venueId);
 }

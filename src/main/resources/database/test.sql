@@ -17,4 +17,6 @@ INSERT INTO venues (venue_name, location) VALUES
 
 SELECT * FROM venues;
 
+SELECT COUNT(*) > 0 FROM attendees WHERE attendee_name = 'ji' AND attendee_id != 1;
+
 UPDATE attendees SET attendee_name = 'null' WHERE attendee_id = 1 RETURNING *;

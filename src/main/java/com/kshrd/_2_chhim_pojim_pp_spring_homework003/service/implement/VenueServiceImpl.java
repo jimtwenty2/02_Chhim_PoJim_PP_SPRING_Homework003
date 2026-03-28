@@ -2,7 +2,7 @@ package com.kshrd._2_chhim_pojim_pp_spring_homework003.service.implement;
 
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.NotFoundExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.OperationNotAllowExceptionHandler;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.PaginationNotAllowedExceptionHandler;
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.InputParametersNotAllowedExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.mapper.VenueMapper;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.VenueRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.VenueResponse;
@@ -26,44 +26,57 @@ public class VenueServiceImpl implements VenueService {
     private final VenueMapper venueMapper;
     private final SharedService sharedService;
 
+    private void validate(Map<String, Integer> params) {
+        Map<String, String> errors = sharedService.validateInputParameters(params);
+        if (!errors.isEmpty()) {
+            throw new InputParametersNotAllowedExceptionHandler(errors);
+        }
+    }
+
     @Override
     public List<VenueResponse> getAllVenues(Integer page, Integer size) {
-        Map<String, String> errors = sharedService.validatePageAndSize(page,size);
-        if (!errors.isEmpty()) {
-            throw new PaginationNotAllowedExceptionHandler(errors);
-        }
+        validate(Map.of("page", page, "size", size));
         List<Venue> venues = venueRepository.findAllVenues(page, size);
         return venueMapper.mapToListVenueResponse(venues);
     }
 
     @Override
     public VenueResponse getVenueById(Integer venueId) {
+        validate(Map.of("venueId",venueId));
         Venue venue = venueRepository.findVenueById(venueId);
         if(venue == null) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
         return venueMapper.mapToVenueResponse(venue);
     }
 
     @Override
-    public void deleteVenueById(Integer venueId) {
-        if(!venueRepository.isVenueExist(venueId)) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
-
-        boolean hasEvents = eventRepository.existsByVenueId(venueId);
-        if(hasEvents) throw new OperationNotAllowExceptionHandler("Some events still use this venue. Update or delete those events first.");
-
-        venueRepository.deleteVenueById(venueId);
+    public VenueResponse createVenue(VenueRequest venueRequest) {
+        if(venueRepository.isVenueExistByName(venueRequest.getVenueName()))
+            throw new OperationNotAllowExceptionHandler("Venue name is already exists");
+        Venue venue = venueRepository.saveVenue(venueRequest);
+        return venueMapper.mapToVenueResponse(venue);
     }
 
     @Override
     public VenueResponse updateVenueById(Integer venueId, VenueRequest venueRequest) {
-        if(!venueRepository.isVenueExist(venueId)) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
+
+        validate(Map.of("venueId",venueId));
+
+        if(!venueRepository.isVenueExistById(venueId)) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
+
+        if(venueRepository.isVenueExistByNameNotCurId(venueRequest.getVenueName(),venueId))
+            throw new OperationNotAllowExceptionHandler("Venue name is already exists");
+
         Venue venue = venueRepository.updateVenueById(venueId, venueRequest);
         return venueMapper.mapToVenueResponse(venue);
     }
 
     @Override
-    public VenueResponse createVenue(VenueRequest venueRequest) {
-        Venue venue = venueRepository.saveVenue(venueRequest);
-        return venueMapper.mapToVenueResponse(venue);
+    public void deleteVenueById(Integer venueId) {
+        validate(Map.of("venueId",venueId));
+        if(!venueRepository.isVenueExistById(venueId)) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
+        boolean hasEvents = eventRepository.existsByVenueId(venueId);
+        if(hasEvents) throw new OperationNotAllowExceptionHandler("Some events still use this venue. Update or delete those events first.");
+        venueRepository.deleteVenueById(venueId);
     }
 }
 
