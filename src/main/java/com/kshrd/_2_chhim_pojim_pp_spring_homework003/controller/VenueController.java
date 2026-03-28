@@ -22,7 +22,7 @@ public class VenueController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<VenueResponse>>> getAllVenues(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "5") Integer size){
+            @RequestParam(defaultValue = "10") Integer size){
         List<VenueResponse> venueResponses = venueService.getAllVenues(page,size);
         ApiResponse<List<VenueResponse>> venueResponsesApiResponse =
                 ApiResponse.<List<VenueResponse>>builder()
