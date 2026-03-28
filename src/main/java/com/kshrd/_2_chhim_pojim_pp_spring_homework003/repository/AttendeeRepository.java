@@ -77,4 +77,12 @@ public interface AttendeeRepository {
         WHERE email = #{email} AND attendee_id != #{attendeeId};
     """)
     boolean isAttendeeExistByEmailNotCurId(String email, Integer attendeeId);
+
+    @Select("""
+        SELECT * FROM attendees a INNER JOIN event_attendee ea ON
+        a.attendee_id = ea.attendee_id WHERE event_id = #{eventId};
+    """)
+    @ResultMap("attendeeMapper")
+    List<Attendee> getAllAttendeesByEventId(Integer eventId);
+
 }

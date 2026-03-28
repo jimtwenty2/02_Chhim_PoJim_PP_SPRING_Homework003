@@ -5,6 +5,7 @@ import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiResp
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiVoidResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.AttendeeResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.AttendeeService;
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendeeController {
     private final AttendeeService attendeeService;
+    private final EventService eventService;
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<AttendeeResponse>>> getAllAttendees(
             @RequestParam(defaultValue = "1") Integer page,
@@ -73,14 +76,14 @@ public class AttendeeController {
         return ResponseEntity.status(HttpStatus.OK).body(attendeeResponseApiResponse);
     }
 
-    @DeleteMapping("/{attendee-id}")
-    public ResponseEntity<ApiVoidResponse> deleteAttendeeById(@PathVariable("attendee-id") Integer attendeeId){
-        attendeeService.deleteAttendeeById(attendeeId);
-        ApiVoidResponse attendeeApiVoidResponse = ApiVoidResponse.builder()
+    @DeleteMapping("/{event-id}")
+    public ResponseEntity<ApiVoidResponse> deleteEventById(@PathVariable("event-id") Integer eventId){
+        eventService.deleteEventById(eventId);
+        ApiVoidResponse eventApiVoidResponse = ApiVoidResponse.builder()
                 .status(HttpStatus.NO_CONTENT.value())
-                .message("Attendee with id " + attendeeId + " deleted successfully")
+                .message("Event with id " + eventId + " deleted successfully")
                 .timestamp(Instant.now())
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(attendeeApiVoidResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(eventApiVoidResponse);
     }
 }
