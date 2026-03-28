@@ -1,5 +1,6 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.service.implement;
 
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.NotFoundExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.VenueRepository;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.VenueService;
@@ -15,7 +16,8 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public List<Venue> getAllVenues(Integer page, Integer size) {
-        return venueRepository.findAllVenues(page, size);
+        throw new NotFoundExceptionHandler("Ort found teh hmm.");
+        // return venueRepository.findAllVenues(page, size);
     }
 }
 
