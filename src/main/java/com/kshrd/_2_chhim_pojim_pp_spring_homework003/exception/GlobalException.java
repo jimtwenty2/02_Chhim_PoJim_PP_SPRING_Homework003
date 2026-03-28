@@ -42,4 +42,13 @@ public class GlobalException {
         problemDetail.setProperty("errors",errors);
         return problemDetail;
     }
+
+    @ExceptionHandler(PaginationNotAllowedExceptionHandler.class)
+    public ProblemDetail handleRunTimeException(PaginationNotAllowedExceptionHandler exceptionHandler){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Bad Request");
+        problemDetail.setProperty("errors",exceptionHandler.getErrors());
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
 }

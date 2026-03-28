@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendeeController {
     private final AttendeeService attendeeService;
-
     @GetMapping
     public ResponseEntity<ApiResponse<List<AttendeeResponse>>> getAllAttendees(
             @RequestParam(defaultValue = "1") Integer page,
