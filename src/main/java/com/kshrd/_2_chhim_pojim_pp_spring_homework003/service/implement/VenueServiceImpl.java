@@ -58,14 +58,10 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public VenueResponse updateVenueById(Integer venueId, VenueRequest venueRequest) {
-
         validate(Map.of("venueId",venueId));
-
         if(!venueRepository.isVenueExistById(venueId)) throw new NotFoundExceptionHandler("Venue with id " + venueId + " not found");
-
         if(venueRepository.isVenueExistByNameNotCurId(venueRequest.getVenueName(),venueId))
             throw new OperationNotAllowExceptionHandler("Venue name is already exists");
-
         Venue venue = venueRepository.updateVenueById(venueId, venueRequest);
         return venueMapper.mapToVenueResponse(venue);
     }
