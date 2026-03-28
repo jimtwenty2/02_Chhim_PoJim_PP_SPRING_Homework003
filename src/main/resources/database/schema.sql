@@ -5,15 +5,15 @@ CREATE DATABASE homework003_db;
 DROP TABLE IF EXISTS venues;
 CREATE TABLE venues(
     venue_id SERIAL PRIMARY KEY,
-    venue_name varchar(100),
-    location varchar(255)
+    venue_name varchar(100) NOT NULL ,
+    location varchar(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS events;
 CREATE TABLE events(
     event_id SERIAL PRIMARY KEY,
-    event_name varchar(100),
-    event_date DATE,
+    event_name varchar(100) NOT NULL ,
+    event_date DATE NOT NULL ,
     venue_id int4 ,
     FOREIGN KEY (venue_id) REFERENCES venues(venue_id)
 );
@@ -21,8 +21,8 @@ CREATE TABLE events(
 DROP TABLE IF EXISTS attendees;
 CREATE TABLE attendees(
     attendee_id SERIAL PRIMARY KEY,
-    attendee_name varchar(100),
-    email text
+    attendee_name varchar(100) NOT NULL ,
+    email TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS event_attendee;

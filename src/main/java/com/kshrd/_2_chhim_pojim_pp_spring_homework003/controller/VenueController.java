@@ -6,11 +6,11 @@ import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiVoid
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.VenueResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.VenueRepository;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.VenueService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class VenueController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<VenueResponse>> createVenue(@RequestBody VenueRequest venueRequest){
+    public ResponseEntity<ApiResponse<VenueResponse>> createVenue(@RequestBody @Valid  VenueRequest venueRequest){
         VenueResponse venueResponse = venueService.createVenue(venueRequest);
         ApiResponse<VenueResponse> venueResponseApiResponse = ApiResponse.<VenueResponse>builder()
                 .status(HttpStatus.OK.value())
@@ -64,7 +64,7 @@ public class VenueController {
 
     @PutMapping("/{venue-id}")
     public ResponseEntity<ApiResponse<VenueResponse>> updateVenueId(
-            @PathVariable("venue-id") Integer venueId, @RequestBody VenueRequest venueRequest){
+            @PathVariable("venue-id") Integer venueId, @RequestBody @Valid VenueRequest venueRequest){
         VenueResponse venueResponse = venueService.updateVenueById(venueId,venueRequest);
         ApiResponse<VenueResponse> venueResponseApiResponse = ApiResponse.<VenueResponse>builder()
                 .status(HttpStatus.OK.value())
@@ -85,6 +85,4 @@ public class VenueController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(venueApiVoidResponse);
     }
-
-
 }
