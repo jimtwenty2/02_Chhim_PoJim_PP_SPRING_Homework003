@@ -33,4 +33,7 @@ CREATE TABLE event_attendee(
                            ON DELETE CASCADE ON UPDATE CASCADE ,
     FOREIGN KEY (event_id) REFERENCES events(event_id)
                            ON DELETE CASCADE ON UPDATE CASCADE
-)
+);
+
+
+

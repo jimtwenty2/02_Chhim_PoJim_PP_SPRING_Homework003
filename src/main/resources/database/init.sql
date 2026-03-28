@@ -48,3 +48,4 @@ INSERT INTO event_attendee (attendee_id, event_id) VALUES
        (5, 8), (8, 8),
        (9, 9), (10, 9),
        (1, 10), (10, 10);
+

@@ -1,9 +1,7 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.exception;
 
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,11 +10,20 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalException {
     @ExceptionHandler
-    public ProblemDetail handleRunTimeException(NotFoundExceptionHandler ex){
+    public ProblemDetail handleRunTimeException(NotFoundExceptionHandler exceptionHandler){
         ProblemDetail problemDetail = ProblemDetail.
-                forStatusAndDetail(HttpStatus.NOT_FOUND,ex.getMessage());
+                forStatusAndDetail(HttpStatus.NOT_FOUND,exceptionHandler.getMessage());
+        problemDetail.setTitle("Not Found");
         problemDetail.setProperty("timestamp",Instant.now());
-        problemDetail.setTitle("Resource not Found");
+        return problemDetail;
+    }
+
+    @ExceptionHandler
+    public ProblemDetail handleRunTimeException(OperationNotAllowExceptionHandler exceptionHandler){
+        ProblemDetail problemDetail = ProblemDetail.
+                forStatusAndDetail(HttpStatus.CONFLICT,exceptionHandler.getMessage());
+        problemDetail.setTitle("Conflict");
+        problemDetail.setProperty("timestamp",Instant.now());
         return problemDetail;
     }
 }

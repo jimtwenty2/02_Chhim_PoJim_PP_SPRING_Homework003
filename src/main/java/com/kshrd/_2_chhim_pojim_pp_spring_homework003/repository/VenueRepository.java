@@ -1,10 +1,8 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.VenueRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -19,5 +17,36 @@ public interface VenueRepository {
         LIMIT #{size}
         OFFSET (#{page} - 1) * ${size};
     """)
-    public List<Venue> findAllVenues(Integer page, Integer size);
+    List<Venue> findAllVenues(Integer page, Integer size);
+
+    @Select("""
+        SELECT * FROM venues WHERE venue_id = #{venueId}
+    """)
+    @ResultMap("venueMapper")
+    Venue findVenueById(Integer venueId);
+
+    @Select("""
+        SELECT COUNT(*) > 0 FROM venues WHERE venue_id = #{venueId};
+    """)
+    boolean isVenueExist(Integer venueId);
+
+    @Select("""
+        DELETE FROM venues WHERE venue_id = #{venueId} RETURNING *;
+    """)
+    Venue deleteVenueById(Integer venueId);
+
+    @Select("""
+        UPDATE venues SET venue_name = #{req.venueName} , location = #{req.location} 
+        WHERE venue_id = #{venueId}
+        RETURNING *;
+    """)
+    @ResultMap("venueMapper")
+    Venue updateVenueById(Integer venueId,@Param("req") VenueRequest venueRequest);
+
+    @Select("""
+        INSERT INTO venues (venue_name, location) VALUES 
+        (#{venueName}, #{location}) RETURNING *;
+    """)
+    @ResultMap("venueMapper")
+    Venue saveVenue(VenueRequest venueRequest);
 }
