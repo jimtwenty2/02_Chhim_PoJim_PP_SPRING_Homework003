@@ -1,5 +1,6 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.service.implement;
 
+import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.InputParametersNotAllowedExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.SharedService;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,6 @@ import java.util.Map;
 
 @Service
 public class SharedServiceImpl implements SharedService {
-
     @Override
     public Map<String, String> validateInputParameters(Map<String, Integer> parameters) {
         Map<String, String> errors = new HashMap<>();
@@ -19,5 +19,11 @@ public class SharedServiceImpl implements SharedService {
                 errors.put(parameter, "must be greater than 0");
         }
         return errors;
+    }
+    public void validate(Map<String, Integer> params) {
+        Map<String, String> errors = validateInputParameters(params);
+        if (!errors.isEmpty()) {
+            throw new InputParametersNotAllowedExceptionHandler(errors);
+        }
     }
 }

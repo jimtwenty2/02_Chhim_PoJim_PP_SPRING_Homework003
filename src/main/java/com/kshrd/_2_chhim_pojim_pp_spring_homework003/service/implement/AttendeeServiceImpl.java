@@ -12,8 +12,6 @@ import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.AttendeeService;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.SharedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,23 +22,16 @@ public class AttendeeServiceImpl implements AttendeeService {
     private final AttendeeMapper attendeeMapper;
     private final SharedService sharedService;
 
-    private void validate(Map<String, Integer> params) {
-        Map<String, String> errors = sharedService.validateInputParameters(params);
-        if (!errors.isEmpty()) {
-            throw new InputParametersNotAllowedExceptionHandler(errors);
-        }
-    }
-
     @Override
     public List<AttendeeResponse> getAllAttendees(Integer page, Integer size) {
-        validate(Map.of("page", page, "size", size));
+        sharedService.validate(Map.of("page", page, "size", size));
         List<Attendee> attendees = attendeeRepository.findAllAttendees(page,size);
         return attendeeMapper.mapToAttendeeListResponse(attendees);
     }
 
     @Override
     public AttendeeResponse getAttendeeById(Integer attendeeId) {
-        validate(Map.of("attendeeId",attendeeId));
+        sharedService.validate(Map.of("attendeeId",attendeeId));
         Attendee attendee = attendeeRepository.findAttendeeById(attendeeId);
         if(attendee == null) throw new NotFoundExceptionHandler("Attendee with id " + attendeeId + " not found");
         return attendeeMapper.mapToAttendeeResponse(attendee);
@@ -58,7 +49,7 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     @Override
     public AttendeeResponse updateAttendeeById(Integer attendeeId, AttendeeRequest attendeeRequest) {
-        validate(Map.of("attendeeId",attendeeId));
+        sharedService.validate(Map.of("attendeeId",attendeeId));
         if(!attendeeRepository.isAttendeeExist(attendeeId))
             throw new NotFoundExceptionHandler("Attendee with id " + attendeeId + " not found");
         if(attendeeRepository.isAttendeeExistByNameNotCurId(attendeeRequest.getAttendeeName(),attendeeId))
@@ -71,7 +62,7 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     @Override
     public void deleteAttendeeById(Integer attendeeId) {
-        validate(Map.of("attendeeId",attendeeId));
+        sharedService.validate(Map.of("attendeeId",attendeeId));
         if(!attendeeRepository.isAttendeeExist(attendeeId)) throw new NotFoundExceptionHandler("Attendee with id " + attendeeId + " not found");
         attendeeRepository.deleteAttendeeById(attendeeId);
     }

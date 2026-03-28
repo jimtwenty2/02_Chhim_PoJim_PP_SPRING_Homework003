@@ -1,13 +1,11 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.service.implement;
 
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.InputParametersNotAllowedExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.NotFoundExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.OperationNotAllowExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.mapper.EventMapper;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.EventRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.EventResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Event;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.AttendeeRepository;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.EventAttendeeRepository;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.EventRepository;
@@ -16,8 +14,6 @@ import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.EventService;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.SharedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,23 +28,16 @@ public class EventServiceImpl implements EventService {
     private final VenueRepository venueRepository;
     private final EventAttendeeRepository eventAttendeeRepository;
 
-    private void validate(Map<String, Integer> params) {
-        Map<String, String> errors = sharedService.validateInputParameters(params);
-        if (!errors.isEmpty()) {
-            throw new InputParametersNotAllowedExceptionHandler(errors);
-        }
-    }
-
     @Override
     public List<EventResponse> getAllEvents(Integer page, Integer size) {
-        validate(Map.of("page", page, "size", size));
+        sharedService.validate(Map.of("page", page, "size", size));
         List<Event> events = eventRepository.findAllEvents(page,size);
         return eventMapper.mapToEventListResponse(events);
     }
 
     @Override
     public EventResponse getEventById(Integer eventId) {
-        validate(Map.of("eventId",eventId));
+        sharedService.validate(Map.of("eventId",eventId));
         Event event = eventRepository.findEventById(eventId);
         if(event == null) throw new NotFoundExceptionHandler("Event with id " + eventId + " not found");
         return eventMapper.mapToEventResponse(event);
@@ -76,7 +65,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponse updateEventById(Integer eventId, EventRequest eventRequest) {
-        validate(Map.of("eventId", eventId));
+        sharedService.validate(Map.of("eventId", eventId));
         if (!eventRepository.isEventExistsById(eventId)) {
             throw new NotFoundExceptionHandler("Event with id " + eventId + " not found");
         }
@@ -104,7 +93,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEventById(Integer eventId) {
-        validate(Map.of("eventId",eventId));
+        sharedService.validate(Map.of("eventId",eventId));
         if(!eventRepository.isEventExistsById(eventId)) throw new NotFoundExceptionHandler("Event with id " + eventId + " not found");
         eventRepository.deleteEventById(eventId);
     }

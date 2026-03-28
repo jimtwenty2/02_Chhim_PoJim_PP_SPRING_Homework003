@@ -1,14 +1,12 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request;
 
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Attendee;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,12 +15,16 @@ import java.util.Set;
 public class EventRequest {
     @NotNull(message = "Event name cannot be null")
     @NotBlank(message = "Event name cannot be blank")
+    @Schema(defaultValue = "Khmer New Year")
     private String eventName;
     @NotNull(message = "Event date cannot be null")
     @FutureOrPresent(message = "Event date must be in the future")
+    @Schema(defaultValue = "2026-04-14")
     private LocalDate eventDate;
     @NotNull(message = "Venue ID is required")
+    @Schema(defaultValue = "1073741824")
     private Integer venueId;
     @NotEmpty(message = "Attendee is required")
+    @Schema(defaultValue = "[1073741824]")
     private Set<Integer> attendees;
 }

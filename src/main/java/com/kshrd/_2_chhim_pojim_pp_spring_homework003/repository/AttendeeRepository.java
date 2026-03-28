@@ -2,9 +2,6 @@ package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.AttendeeRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Attendee;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -46,7 +43,7 @@ public interface AttendeeRepository {
     @Select("""
         UPDATE attendees SET attendee_name = #{req.attendeeName} ,
                              email = #{req.email} WHERE attendees.attendee_id = #{attendeeId}
-                            RETURNING *;
+                             RETURNING *;
     """)
     @ResultMap("attendeeMapper")
     Attendee updateVenueById(Integer attendeeId,@Param("req") AttendeeRequest attendeeRequest);

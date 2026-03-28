@@ -4,7 +4,6 @@ import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.VenueReq
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiVoidResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.VenueResponse;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.repository.VenueRepository;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.VenueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

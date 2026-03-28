@@ -2,8 +2,6 @@ package com.kshrd._2_chhim_pojim_pp_spring_homework003.repository;
 
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.VenueRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.entity.Venue;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

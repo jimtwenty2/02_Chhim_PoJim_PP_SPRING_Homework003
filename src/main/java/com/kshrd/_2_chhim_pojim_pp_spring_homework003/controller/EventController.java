@@ -1,22 +1,17 @@
 package com.kshrd._2_chhim_pojim_pp_spring_homework003.controller;
 
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.exception.InputParametersNotAllowedExceptionHandler;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.request.EventRequest;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.ApiVoidResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.EventResponse;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.model.dto.response.VenueResponse;
 import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.EventService;
-import com.kshrd._2_chhim_pojim_pp_spring_homework003.service.SharedService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -90,5 +85,4 @@ public class EventController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(eventApiVoidResponse);
     }
-
 }

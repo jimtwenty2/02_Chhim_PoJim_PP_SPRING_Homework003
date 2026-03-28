@@ -20,12 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendeeController {
     private final AttendeeService attendeeService;
-    private final EventService eventService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<AttendeeResponse>>> getAllAttendees(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "5") Integer size){
+            @RequestParam(defaultValue = "10") Integer size){
         List<AttendeeResponse> attendeeResponses = attendeeService.getAllAttendees(page,size);
         ApiResponse<List<AttendeeResponse>> attendeeResponsesApiResponse =
                 ApiResponse.<List<AttendeeResponse>>builder()
@@ -76,14 +75,14 @@ public class AttendeeController {
         return ResponseEntity.status(HttpStatus.OK).body(attendeeResponseApiResponse);
     }
 
-    @DeleteMapping("/{event-id}")
-    public ResponseEntity<ApiVoidResponse> deleteEventById(@PathVariable("event-id") Integer eventId){
-        eventService.deleteEventById(eventId);
-        ApiVoidResponse eventApiVoidResponse = ApiVoidResponse.builder()
+    @DeleteMapping("/{attendee-id}")
+    public ResponseEntity<ApiVoidResponse> deleteAttendeeById(@PathVariable("attendee-id") Integer attendeeId){
+        attendeeService.deleteAttendeeById(attendeeId);
+        ApiVoidResponse attendeeApiVoidResponse = ApiVoidResponse.builder()
                 .status(HttpStatus.NO_CONTENT.value())
-                .message("Event with id " + eventId + " deleted successfully")
+                .message("Attendee with id " + attendeeId + " deleted successfully")
                 .timestamp(Instant.now())
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(eventApiVoidResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(attendeeApiVoidResponse);
     }
 }

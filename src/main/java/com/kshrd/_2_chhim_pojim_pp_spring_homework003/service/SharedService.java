@@ -5,4 +5,5 @@ import java.util.Map;
 
 public interface SharedService {
     Map<String,String> validateInputParameters(Map<String, Integer> parameters);
+    void validate(Map<String, Integer> params);
 }
