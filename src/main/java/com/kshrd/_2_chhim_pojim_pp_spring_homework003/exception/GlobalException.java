@@ -21,7 +21,6 @@ public class GlobalException {
         problemDetail.setProperty("timestamp",Instant.now());
         return problemDetail;
     }
-
     @ExceptionHandler(OperationNotAllowExceptionHandler.class)
     public ProblemDetail handleRunTimeException(OperationNotAllowExceptionHandler exceptionHandler){
         ProblemDetail problemDetail = ProblemDetail.
@@ -30,7 +29,6 @@ public class GlobalException {
         problemDetail.setProperty("timestamp",Instant.now());
         return problemDetail;
     }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleRunTimeException(MethodArgumentNotValidException exceptions){
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
@@ -42,7 +40,6 @@ public class GlobalException {
         problemDetail.setProperty("errors",errors);
         return problemDetail;
     }
-
     @ExceptionHandler(InputParametersNotAllowedExceptionHandler.class)
     public ProblemDetail handleRunTimeException(InputParametersNotAllowedExceptionHandler exceptionHandler){
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);

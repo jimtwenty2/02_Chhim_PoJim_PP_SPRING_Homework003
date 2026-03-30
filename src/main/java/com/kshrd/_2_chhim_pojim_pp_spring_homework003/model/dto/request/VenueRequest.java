@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class VenueRequest {
     @NotNull(message = "Venue name cannot be null")
     @NotBlank(message = "Venue name cannot be blank")
-    @Schema(defaultValue = "Eaon Mall II")
+    @Schema(defaultValue = "Aeon Mall II")
     private String venueName;
     @NotNull(message = "Location cannot be null")
     @NotBlank(message = "Location cannot be blank")
